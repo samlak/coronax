@@ -53,18 +53,38 @@ bot.onText(/\/worldwide/, (msg) => {
         const cases = result.data.cases;
         const deaths = result.data.deaths;
         const recovered = result.data.recovered;
-
-        bot.sendMessage(
-            msg.chat.id,
-            `*Coronavirus Global Statistics* \nTotal cases *${cases}* \nTotal deaths *${deaths}* \nTotal recovered *${recovered}*`,
-            {parse_mode: "Markdown"}
-        );
+        
+        axios.get(countryStatistics).then((country) => {
+            var todayNewCases = country.data.filter((newCases) => newCases.todayCases)
+                .map((affected) => affected.todayCases)
+                .reduce((start, stop) => {
+                    return start + stop;
+                }, 0);
+            var todayDeathCases = country.data.filter((deathCases) => deathCases.todayDeaths)
+                .map((affected) => affected.todayDeaths)
+                .reduce((start, stop) => {
+                    return start + stop;
+                }, 0);
+                
+            var criticalCases = country.data.filter((criticalCases) => criticalCases.critical)
+                .map((affected) => affected.critical)
+                .reduce((start, stop) => {
+                    return start + stop;
+                }, 0);
+                
+            var countryAffected = country.data.length;
+            bot.sendMessage(
+                msg.chat.id,
+                `*Coronavirus Global Statistics* \n\nTotal country affected *${countryAffected}*  \n\nTotal cases *${cases}* \nTotal deaths *${deaths}* \nTotal recovered *${recovered}* \nTotal critical *${criticalCases}* \n\nToday's cases *${todayNewCases}* \nToday's deaths *${todayDeathCases}*`,
+                {parse_mode: "Markdown"}
+            );
+        });
     }).catch((error) => {
         bot.sendMessage(msg.chat.id, "There was an error when fetching the data");
     });
 });
 
-bot.onText(/\/countries/, (msg) => {
+bot.onText(/\/country/, (msg) => {
     axios.get(countryStatistics).then((result) => {
         
         const countryData = (start, stop, currentNum, next, previous) => {
