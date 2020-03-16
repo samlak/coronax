@@ -118,6 +118,66 @@ const country = (bot, msg) => {
 
 }
 
+const search = (bot, msg) => {
+    var country =  msg.text.split('/search ')[1];
+    if(country){
+        axios.get(countryStatistics).then((result) => {
+            const newData = result.data.map((country) => {
+                return {
+                    country: country.country.toLowerCase(),
+                    cases: country.cases,
+                    todayCases: country.todayCases,
+                    deaths: country.deaths,
+                    todayDeaths: country.todayDeaths,
+                    recovered: country.recovered,
+                    critical: country.critical
+                };
+            });
+            const countryFound = newData.find((affected) => affected.country == country.toLowerCase());
+            if(!countryFound){
+                return  bot.sendMessage(
+                    msg.chat.id, 
+                    `No data found for *${country}*. \nYou might have made mistake when typing the country name or the country has no cases of coronavirus confirmed yet. If you made mistake when searching click /search for more information on how to search`,
+                    {parse_mode: "Markdown"}
+                );
+            }
+            const countryName = countryFound.country;
+            const cases = countryFound.cases;
+            const todayCases = countryFound.todayCases;
+            const deaths = countryFound.deaths;
+            const todayDeaths = countryFound.todayDeaths;
+            const recovered = countryFound.recovered;
+            const critical = countryFound.critical;
+            let countryInfo = `\nSearch result for *${countryName}* \n\nTotal cases *${cases}* \nToday's cases *${todayCases}* \nTotal deaths *${deaths}* \nToday's deaths *${todayDeaths}* \nTotal recovered *${recovered}*  \nTotal critical *${critical}* \n`;
+         
+            return  bot.sendMessage(
+                msg.chat.id, 
+                countryInfo,
+                {
+                    "reply_markup": {
+                        "inline_keyboard": [
+                            [{text: "Source (Worldometers)", url: "https://www.worldometers.info/coronavirus/"}],
+                        ]
+                    },
+                    parse_mode: "Markdown"
+                }
+            );
+            
+        }).catch((error) => {
+            console.log(error);
+            bot.sendMessage(msg.chat.id, "There was an error when fetching the data.");
+        });
+
+    }else{
+        bot.sendMessage(
+            msg.chat.id,
+            `You can search the data of the affected countries. Type /search with space and the name of the country. For example, "*/search Nigeria*" `,
+            {parse_mode: "Markdown"}
+        );
+    }
+
+}
+
 const news = (bot, msg) => {
     bot.sendMessage(msg.chat.id, "Hi");
 }
@@ -130,4 +190,4 @@ const tweet = (bot, msg) => {
     bot.sendMessage(msg.chat.id, "Hi");
 }
 
-module.exports = {worldwide, country, news, video, tweet};
+module.exports = {worldwide, country, search, news, video, tweet};

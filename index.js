@@ -50,6 +50,10 @@ bot.onText(/\/country/, (msg) => {
     Data.country(bot, msg);
 });
 
+bot.onText(/\/search/, (msg) => {
+    Data.search(bot, msg);
+});
+
 bot.onText(/\/news/, (msg) => {
     Data.news(bot, msg);
 });
