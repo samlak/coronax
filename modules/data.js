@@ -190,4 +190,27 @@ const tweet = (bot, msg) => {
     bot.sendMessage(msg.chat.id, "Hi");
 }
 
-module.exports = {worldwide, country, search, news, video, tweet};
+const help = (bot, msg) => {
+    bot.sendMessage(
+        msg.chat.id,
+        "Welcome to *CoronaX* (COVID-19 information bot)."+
+        "\nThis is *CoronaX* help portal. You can start using the bot with the command below:"+
+        "\n\n/help - To get the list of command to use when interacting with the bot"+
+        "\n/subscribe - To get a daily update about coronavirus (COVID-19)"+
+        "\n/worldwide - To know the general statistics of the affected people "+
+        "\n/country - To know the statistics of the affected people by country"+
+        "\n/search - To know the statistics of  each country"+
+        "\n/news - To get news update about coronavirus (COVID-19)"+
+        "\n/about - To know more about coronavirus (COVID-19)"+
+        "\n/symptom - To know the symptom of coronavirus (COVID-19)"+
+        "\n/prevent - To know how to prevent coronavirus (COVID-19)"+
+        "\n/video - To get video related to coronavirus (COVID-19)"+
+        "\n/tweet - To get the latest tweet on coronavirus (COVID-19)"+
+        "\n/contribute - To contribute to this project"+
+        "\n/credit - To see list of contributor"+
+        "\n/unsubscribe - Unsubscribe from the mailing list",
+        {parse_mode: "Markdown"}
+    );
+}
+
+module.exports = {worldwide, country, search, news, video, tweet, help};

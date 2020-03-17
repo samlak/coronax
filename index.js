@@ -5,19 +5,20 @@ const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(process.env.TELEGRAM_API_TOKEN, {polling: true});
 const port = process.env.PORT || 3000;
 
-const Subscription = require('./modules/subscription');
+const Admin = require('./modules/admin');
 const Info = require('./modules/info');
 const Data = require('./modules/data');
+const News = require('./modules/news');
 
 var app = express();
 
-// Subscription
+// Admin
 bot.onText(/\/subscribe/, (msg) => {
-    Subscription.subscribe(bot, msg);
+    Admin.subscribe(bot, msg);
 });
 
 bot.onText(/\/unsubscribe/, (msg) => {
-    Subscription.unsubscribe(bot, msg);
+    Admin.unsubscribe(bot, msg);
 });
 
 // General Information
@@ -55,7 +56,7 @@ bot.onText(/\/search/, (msg) => {
 });
 
 bot.onText(/\/news/, (msg) => {
-    Data.news(bot, msg);
+    News.newsUpdate(bot, msg);
 });
 
 bot.onText(/\/video/, (msg) => {
@@ -66,9 +67,21 @@ bot.onText(/\/tweet/, (msg) => {
     Data.tweet(bot, msg);
 });
 
-//User count
+bot.onText(/\/help/, (msg) => {
+    Data.help(bot, msg);
+});
+
+// On start
+bot.onText(/\/start/, (msg) => {
+    Admin.start(bot, msg);
+});
+
+bot.onText(/\/log/, (msg) => {
+    Admin.log(bot, msg);
+});
+
 bot.on('message', (msg) => {
-    Subscription.start(msg);
+    Admin.onMessage(msg);
 });
 
 app.listen(port, () => console.log("Telegram bot is listening on port "+ port + "!"));
