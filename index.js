@@ -9,6 +9,7 @@ const Admin = require('./modules/admin');
 const Info = require('./modules/info');
 const Data = require('./modules/data');
 const News = require('./modules/news');
+const Video = require('./modules/video');
 
 var app = express();
 
@@ -60,11 +61,7 @@ bot.onText(/\/news/, (msg) => {
 });
 
 bot.onText(/\/video/, (msg) => {
-    Data.video(bot, msg);
-});
-
-bot.onText(/\/tweet/, (msg) => {
-    Data.tweet(bot, msg);
+    Video.videoUpdate(bot, msg);
 });
 
 bot.onText(/\/help/, (msg) => {

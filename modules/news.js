@@ -1,29 +1,18 @@
-'use strict'
-
 const fs = require('fs')
 const cheerio = require('cheerio')
 const fetch = require('node-fetch')
 
 const newsUpdate = (bot, msg) => {
-
-    const keyword = "Coronavirus"
+    const keyword = "Coronavirus news"
     const output = "news.json"
     const timeframe = '14d'
-
-    if(fs.existsSync(output)){
-        var fileModified = fs.statSync(output);
-        var lastModifiedTimestamp = fileModified.mtime.getTime();
-        var lastModified = Math.round((new Date() - lastModifiedTimestamp) / 60000);
-    } else {
-        var lastModified = "noFile";
-    }
-
-    if(lastModified >= 15 || lastModified == "noFile"){
+    
+    const fetchFromGoogleNews = () => {
         fetch(`https://news.google.com/search?q=${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
-            const $ = cheerio.load(data)
-            const articles = $('c-wiz article')
-            let results = []
-            let i = 0
+            const $ = cheerio.load(data);
+            const articles = $('c-wiz article');
+            let results = [];
+            let i = 0;
             $(articles).each(function() {
                 results.push({
                     "title": $(this).find('h3').text() || false,
@@ -31,9 +20,9 @@ const newsUpdate = (bot, msg) => {
                     "link": $(this).find('a').first().attr('href').replace('./', 'https://news.google.com/') || false,
                     "source": $(this).find('div:last-child a').text() || false,
                     "time": $(this).find('div:last-child time').text() || false
-                })
-                i++
-            })
+                });
+                i++;
+            });
             return results;
         }).then(results => {
             fs.writeFile(output, JSON.stringify(results), function(err) {
@@ -46,9 +35,21 @@ const newsUpdate = (bot, msg) => {
         });
     }
     
-    var newsUpdate = fs.readFileSync(output).toString()
-    var news = JSON.parse(newsUpdate)
+    if(fs.existsSync(output)){
+        var fileModified = fs.statSync(output);
+        var lastModifiedTimestamp = fileModified.mtime.getTime();
+        var lastModified = Math.round((new Date() - lastModifiedTimestamp) / 60000);
+    } else {
+        var lastModified = "noFile";
+    }
+
+    if(lastModified >= 15 || lastModified == "noFile"){
+        fetchFromGoogleNews();
+    }
     
+    var newsUpdate = fs.readFileSync(output).toString();
+    var news = JSON.parse(newsUpdate);
+
     const newsData = (start, stop) => {
 
         var newsInfo = '';
@@ -63,7 +64,8 @@ const newsUpdate = (bot, msg) => {
         };
 
         var keyboard = [];
-        var lastPage = news.length >= 10 ? 10 : news.length;
+        var pages =  news.length / 10;
+        var lastPage = pages >= 8 ? 8 : pages;
 
         for(let i = 0; i < lastPage; i++){
             keyboard.push({text: Number(i) + 1, callback_data: i});

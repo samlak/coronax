@@ -164,7 +164,6 @@ const search = (bot, msg) => {
             );
             
         }).catch((error) => {
-            console.log(error);
             bot.sendMessage(msg.chat.id, "There was an error when fetching the data.");
         });
 
@@ -176,18 +175,6 @@ const search = (bot, msg) => {
         );
     }
 
-}
-
-const news = (bot, msg) => {
-    bot.sendMessage(msg.chat.id, "Hi");
-}
-
-const video = (bot, msg) => {
-    bot.sendMessage(msg.chat.id, "Hi");
-}
-
-const tweet = (bot, msg) => {
-    bot.sendMessage(msg.chat.id, "Hi");
 }
 
 const help = (bot, msg) => {
@@ -205,7 +192,6 @@ const help = (bot, msg) => {
         "\n/symptom - To know the symptom of coronavirus (COVID-19)"+
         "\n/prevent - To know how to prevent coronavirus (COVID-19)"+
         "\n/video - To get video related to coronavirus (COVID-19)"+
-        "\n/tweet - To get the latest tweet on coronavirus (COVID-19)"+
         "\n/contribute - To contribute to this project"+
         "\n/credit - To see list of contributor"+
         "\n/unsubscribe - Unsubscribe from the mailing list",
@@ -213,4 +199,4 @@ const help = (bot, msg) => {
     );
 }
 
-module.exports = {worldwide, country, search, news, video, tweet, help};
+module.exports = {worldwide, country, search, help};

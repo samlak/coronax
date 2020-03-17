@@ -96,7 +96,7 @@ const start = (bot, msg) => {
     bot.sendMessage(
         msg.chat.id,
         "Welcome to *CoronaX* (COVID-19 information bot)."+
-        "\n*CoronaX* provides you with news daily update, live cases count, search by country funtionality, videoes, tweets and many more. You can start using the bot with the command below:"+
+        "\n*CoronaX* provides you with news daily update, live cases count, search by country funtionality, videos, and many more. You can start using the bot with the command below:"+
         "\n\n/help - To get the list of command to use when interacting with the bot"+
         "\n/subscribe - To get a daily update about coronavirus (COVID-19)"+
         "\n/worldwide - To know the general statistics of the affected people "+
@@ -107,7 +107,6 @@ const start = (bot, msg) => {
         "\n/symptom - To know the symptom of coronavirus (COVID-19)"+
         "\n/prevent - To know how to prevent coronavirus (COVID-19)"+
         "\n/video - To get video related to coronavirus (COVID-19)"+
-        "\n/tweet - To get the latest tweet on coronavirus (COVID-19)"+
         "\n/contribute - To contribute to this project"+
         "\n/credit - To see list of contributor"+
         "\n/unsubscribe - Unsubscribe from the mailing list",
@@ -149,13 +148,56 @@ const onMessage = (msg) => {
 }
 
 const dailyUpdate = (bot, msg) => {
+    
+    const fetchFromGoogleNews = () => {
+        fetch(`https://news.google.com/search?q=${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
+            const $ = cheerio.load(data);
+            const articles = $('c-wiz article');
+            let results = [];
+            let i = 0;
+            $(articles).each(function() {
+                results.push({
+                    "title": $(this).find('h3').text() || false,
+                    "subtitle": $(this).find('span').first().text() || false,
+                    "link": $(this).find('a').first().attr('href').replace('./', 'https://news.google.com/') || false,
+                    "source": $(this).find('div:last-child a').text() || false,
+                    "time": $(this).find('div:last-child time').text() || false
+                });
+                i++;
+            });
+            return results;
+        }).then(results => {
+            for(var i = 0; i < 10; i++) {
+                const title = results[i].title;
+                const subtitle = results[i].subtitle;
+                const link = results[i].link;
+                const source = results[i].source;
+                const time = results[i].time;
+                return `\n\n*${title}* \n${subtitle} \n[${source}](${link}) \n${time}`;
+            }
+        }).catch((err) => {  
+            return "There was an error when fetching the data";
+        });
+    }
+    
     const subscribers = loadSubscribers();
-    subscribers
+    subscribers.forEach(subscriber => {
+        // bot.sendMessage(
+        //     subscriber.id,
+        //     `*CoronaX Daily Update* \nYou are receiving this newsletter because you subscribed to it. You can unsubscribe at any given time by clicking /unsubscribe`,
+        //     {parse_mode: "Markdown"}
+        // );
         bot.sendMessage(
-            msg.chat.id,
-            `*Dashboard* \n\nUsers : *${users.length}* \n\nSubscribers : *${subscribers.length}*`,
+            subscriber.id,
+            `*CoronaX Daily News Update* \n${fetchFromGoogleNews()}`,
             {parse_mode: "Markdown"}
         );
+        bot.sendMessage(
+            subscriber.id,
+            '*CoronaX Daily Video Update* \n',
+            {parse_mode: "Markdown"}
+        );
+    });
 }
 
 module.exports = {subscribe, unsubscribe, start, onMessage, log, dailyUpdate};

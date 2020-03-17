@@ -154,7 +154,15 @@ const contribute = (bot, msg) => {
 const credit = (bot, msg) => {
     bot.sendMessage(
         msg.chat.id,
-        `I will like to appreciate the following for providing data that drive this bot: \n[inline URL](http://www.example.com/)`,
+        "I will like to appreciate the following for providing data that drive this bot:" +
+        "\n\n[Wikipedia](https://wikipedia.org/)"+
+        "\n[Google News](https://news.google.com/)"+
+        "\n[EliteDaMyth](https://lmao.ninja/)"+
+        "\n[WHO (World Health Organization)](https://www.who.int/)"+
+        "\n[Twitter](https://twitter.com/)"+
+        "\n[Youtube](https://youtube.com/)"+
+        "\n[Mayoclinic](https://www.mayoclinic.org/)"+
+        "\n[Worldometers](https://www.worldometers.info/)",
         {parse_mode: "Markdown"}
     );
 }

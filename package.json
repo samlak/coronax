@@ -13,7 +13,9 @@
     "express": "^4.17.1",
     "my-google-news": "^3.0.0",
     "node-fetch": "^2.6.0",
-    "node-telegram-bot-api": "^0.40.0"
+    "node-telegram-bot-api": "^0.40.0",
+    "scrape-youtube": "0.0.5",
+    "twitter": "^1.7.1"
   },
   "devDependencies": {},
   "scripts": {
