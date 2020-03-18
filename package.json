@@ -13,9 +13,11 @@
     "node-telegram-bot-api": "^0.40.0",
     "scrape-youtube": "0.0.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "pm2": "^4.2.3"
+  },
   "scripts": {
-    "start": "node index.js",
+    "start": "pm2 start index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
