@@ -2,7 +2,7 @@
   "name": "coronax",
   "version": "1.0.0",
   "description": "This bot gives information about coronavirus (COVID-19). It gives statistic, symptoms, preventive measures, news update about coronavirus.",
-  "main": "index.js",
+  "main": "./index.js",
   "dependencies": {
     "axios": "^0.19.2",
     "cheerio": "^1.0.0-rc.3",
