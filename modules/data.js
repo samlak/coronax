@@ -199,4 +199,12 @@ const help = (bot, msg) => {
     );
 }
 
-module.exports = {worldwide, country, search, help};
+const notFound = (bot, msg) => {
+    bot.sendMessage(
+        msg.chat.id,
+        "Sorry! I can\'t understand you. Please use /help to see the list of available command",
+        {parse_mode: "Markdown"}
+    );
+}
+
+module.exports = {worldwide, country, search, help, notFound};

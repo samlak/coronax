@@ -1,10 +1,9 @@
 var express = require("express");
 require("dotenv").config();
-const axios = require("axios");
 const TelegramBot = require('node-telegram-bot-api');
 var schedule = require('node-schedule');
 
-const bot = new TelegramBot(process.env.TELEGRAM_API_TOKEN, {polling: true});
+const bot = new TelegramBot(process.env.TELEGRAM_API_TOKEN, {polling: true, onlyFirstMatch: true});
 const port = process.env.PORT || 3000;
 
 const Admin = require('./modules/admin');
@@ -77,6 +76,10 @@ bot.onText(/\/start/, (msg) => {
 
 bot.onText(/\/log/, (msg) => {
     Admin.log(bot, msg);
+});
+
+bot.onText(/.+/, (msg) => {
+    Data.notFound(bot, msg);
 });
 
 bot.on('message', (msg) => {
