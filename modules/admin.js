@@ -99,7 +99,7 @@ const start = (bot, msg) => {
     bot.sendMessage(
         msg.chat.id,
         "Welcome to *CoronaX* (COVID-19 information bot)."+
-        "\n*CoronaX* provides you with news daily update, live cases count, search by country functionality, videos, and many more. You can start using the bot with the command below:"+
+        "\n*CoronaX* provides you with daily news update, live cases count, search by country functionality, videos, and many more. You can start using the bot with the command below:"+
         "\n\n/help - To get the list of command to use when interacting with the bot"+
         "\n/subscribe - To get a daily update about coronavirus (COVID-19)"+
         "\n/worldwide - To know the general statistics of the affected people "+
