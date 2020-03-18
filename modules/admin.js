@@ -1,4 +1,7 @@
 const fs = require('fs');
+const cheerio = require('cheerio');
+const fetch = require('node-fetch');
+const search = require('scrape-youtube');
 
 const loadUsers = () => {
     try{
@@ -147,9 +150,13 @@ const onMessage = (msg) => {
     }
 }
 
-const dailyUpdate = (bot, msg) => {
-    
+const dailyUpdate = (bot) => {
+
     const fetchFromGoogleNews = () => {
+        const keyword = "Coronavirus news";
+        const timeframe = '14d';
+        const output = "news.json";
+
         fetch(`https://news.google.com/search?q=${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
             const $ = cheerio.load(data);
             const articles = $('c-wiz article');
@@ -167,34 +174,81 @@ const dailyUpdate = (bot, msg) => {
             });
             return results;
         }).then(results => {
-            for(var i = 0; i < 10; i++) {
-                const title = results[i].title;
-                const subtitle = results[i].subtitle;
-                const link = results[i].link;
-                const source = results[i].source;
-                const time = results[i].time;
-                return `\n\n*${title}* \n${subtitle} \n[${source}](${link}) \n${time}`;
-            }
+            fs.writeFile(output, JSON.stringify(results), function(err) {
+                if(err) {
+                    return "There was an error when fetching the data";
+                }
+            });
         }).catch((err) => {  
             return "There was an error when fetching the data";
         });
     }
     
+    fetchFromGoogleNews();
+
+    const newsData = () => {
+        const output = "news.json";
+        var newsUpdate = fs.readFileSync(output).toString();
+        var news = JSON.parse(newsUpdate);
+        var newsInfo = '';
+        for(var i = 0; i < 10; i++) {
+            const title = news[i].title;
+            const subtitle = news[i].subtitle;
+            const link = news[i].link;
+            const source = news[i].source;
+            const time = news[i].time;
+            newsInfo += `\n\n*${title}* \n${subtitle} \n[${source}](${link}) \n${time}`;
+        }
+        // console.log(newsInfo); 
+        return newsInfo; 
+    } 
+
+    const fetchFromYoutube = () => {
+        const keyword = "Coronavirus video";
+        const output = "video.json";
+        
+        search(keyword, { type : "video", limit : 50}).then(results => {
+            fs.writeFile(output, JSON.stringify(results), function(err) {
+                if(err) {
+                    return "There was an error when fetching the data";
+                }
+            })
+        }).catch((err) => {  
+            return "There was an error when fetching the data";
+        });
+    }
+        
+    fetchFromYoutube();
+    
+    const videoData = () => {
+        const output = "video.json";
+        var videoUpdate = fs.readFileSync(output).toString();
+        var video = JSON.parse(videoUpdate);
+
+        var videoInfo = '';
+        for(var i = 0; i < 10; i++) {
+            const title = video[i].title;
+            const description = video[i].description;
+            const link = video[i].link;
+            const channel = video[i].channel;
+            const channel_link = video[i].channel_link;
+            const upload_date = video[i].upload_date;
+            videoInfo += `\n\n*${title}* \n${description} \nBy [${channel}](${channel_link}) uploaded *${upload_date}* \n[Watch now](${link})`;
+        };
+        return videoInfo;
+    } 
+    
+
     const subscribers = loadSubscribers();
     subscribers.forEach(subscriber => {
-        // bot.sendMessage(
-        //     subscriber.id,
-        //     `*CoronaX Daily Update* \nYou are receiving this newsletter because you subscribed to it. You can unsubscribe at any given time by clicking /unsubscribe`,
-        //     {parse_mode: "Markdown"}
-        // );
         bot.sendMessage(
             subscriber.id,
-            `*CoronaX Daily News Update* \n${fetchFromGoogleNews()}`,
+            `*CoronaX Daily News Update* ${newsData()}`,
             {parse_mode: "Markdown"}
         );
         bot.sendMessage(
             subscriber.id,
-            '*CoronaX Daily Video Update* \n',
+            `*CoronaX Daily Video Update* \n${videoData()}`,
             {parse_mode: "Markdown"}
         );
     });

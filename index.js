@@ -2,6 +2,8 @@ var express = require("express");
 require("dotenv").config();
 const axios = require("axios");
 const TelegramBot = require('node-telegram-bot-api');
+var schedule = require('node-schedule');
+
 const bot = new TelegramBot(process.env.TELEGRAM_API_TOKEN, {polling: true});
 const port = process.env.PORT || 3000;
 
@@ -79,6 +81,10 @@ bot.onText(/\/log/, (msg) => {
 
 bot.on('message', (msg) => {
     Admin.onMessage(msg);
+});
+
+schedule.scheduleJob({hour: 12, minute: 00}, function(){
+    Admin.dailyUpdate(bot);
 });
 
 app.listen(port, () => console.log("Telegram bot is listening on port "+ port + "!"));

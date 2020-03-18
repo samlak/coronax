@@ -3,9 +3,9 @@ const cheerio = require('cheerio')
 const fetch = require('node-fetch')
 
 const newsUpdate = (bot, msg) => {
-    const keyword = "Coronavirus news"
-    const output = "news.json"
-    const timeframe = '14d'
+    const keyword = "Coronavirus news";
+    const output = "news.json";
+    const timeframe = '14d';
     
     const fetchFromGoogleNews = () => {
         fetch(`https://news.google.com/search?q=${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
