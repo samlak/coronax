@@ -159,7 +159,6 @@ const credit = (bot, msg) => {
         "\n[Google News](https://news.google.com/)"+
         "\n[EliteDaMyth](https://lmao.ninja/)"+
         "\n[WHO (World Health Organization)](https://www.who.int/)"+
-        "\n[Twitter](https://twitter.com/)"+
         "\n[Youtube](https://youtube.com/)"+
         "\n[Mayoclinic](https://www.mayoclinic.org/)"+
         "\n[Worldometers](https://www.worldometers.info/)",

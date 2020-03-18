@@ -185,8 +185,8 @@ const help = (bot, msg) => {
         "\n\n/help - To get the list of command to use when interacting with the bot"+
         "\n/subscribe - To get a daily update about coronavirus (COVID-19)"+
         "\n/worldwide - To know the general statistics of the affected people "+
-        "\n/country - To know the statistics of the affected people by country"+
-        "\n/search - To know the statistics of  each country"+
+        "\n/country - To know the statistics of the people affected in each country"+
+        "\n/search - To know the statistics of a specific country"+
         "\n/news - To get news update about coronavirus (COVID-19)"+
         "\n/about - To know more about coronavirus (COVID-19)"+
         "\n/symptom - To know the symptom of coronavirus (COVID-19)"+

@@ -82,10 +82,6 @@ bot.onText(/.+/, (msg) => {
     Data.notFound(bot, msg);
 });
 
-bot.on('message', (msg) => {
-    Admin.onMessage(msg);
-});
-
 schedule.scheduleJob({hour: 12, minute: 00}, function(){
     Admin.dailyUpdate(bot);
 });

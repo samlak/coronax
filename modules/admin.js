@@ -99,12 +99,12 @@ const start = (bot, msg) => {
     bot.sendMessage(
         msg.chat.id,
         "Welcome to *CoronaX* (COVID-19 information bot)."+
-        "\n*CoronaX* provides you with news daily update, live cases count, search by country funtionality, videos, and many more. You can start using the bot with the command below:"+
+        "\n*CoronaX* provides you with news daily update, live cases count, search by country functionality, videos, and many more. You can start using the bot with the command below:"+
         "\n\n/help - To get the list of command to use when interacting with the bot"+
         "\n/subscribe - To get a daily update about coronavirus (COVID-19)"+
         "\n/worldwide - To know the general statistics of the affected people "+
-        "\n/country - To know the statistics of the affected people by country"+
-        "\n/search - To know the statistics of  each country"+
+        "\n/country - To know the statistics of the people affected in each country"+
+        "\n/search - To know the statistics of a specific country"+
         "\n/news - To get news update about coronavirus (COVID-19)"+
         "\n/about - To know more about coronavirus (COVID-19)"+
         "\n/symptom - To know the symptom of coronavirus (COVID-19)"+
@@ -115,6 +115,17 @@ const start = (bot, msg) => {
         "\n/unsubscribe - Unsubscribe from the mailing list",
         {parse_mode: "Markdown"}
     );
+    const users = loadUsers();
+    const userExist = users.find((user) => user.id == msg.chat.id);
+    if(!userExist){
+        const user = {
+            id: msg.chat.id,
+            firstName: msg.chat.first_name,
+            lastName: msg.chat.last_name
+        }
+        users.push(user);
+        saveUser(users);
+    }
 }
 
 const log = (bot, msg) => {
@@ -136,19 +147,6 @@ const log = (bot, msg) => {
     }   
 }
 
-const onMessage = (msg) => {
-    const users = loadUsers();
-    const userExist = users.find((user) => user.id == msg.chat.id);
-    if(!userExist){
-        const user = {
-            id: msg.chat.id,
-            firstName: msg.chat.first_name,
-            lastName: msg.chat.last_name
-        }
-        users.push(user);
-        saveUser(users);
-    }
-}
 
 const dailyUpdate = (bot) => {
 
@@ -254,4 +252,4 @@ const dailyUpdate = (bot) => {
     });
 }
 
-module.exports = {subscribe, unsubscribe, start, onMessage, log, dailyUpdate};
+module.exports = {subscribe, unsubscribe, start, log, dailyUpdate};
