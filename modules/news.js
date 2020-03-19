@@ -26,7 +26,17 @@ const newsUpdate = (bot, msg) => {
                     });
                     i++;
                 });
-                return results;
+                return Promise.all(results.map(article => {
+                    return fetch(article.link).then(res => res.text()).then(data => {
+                        const _$ = cheerio.load(data)
+                        article.link = _$('c-wiz a[rel=nofollow]').attr('href')
+                        return article
+                    })
+                })).then(articles => {
+                    return articles
+                }).catch((err) => {
+                    return results;
+                })
             }).then(results => {
                 fs.writeFile(output, JSON.stringify(results), function(err) {
                     if(err) {
@@ -123,7 +133,17 @@ const newsUpdate = (bot, msg) => {
                     });
                     i++;
                 });
-                return results;
+                return Promise.all(results.map(article => {
+                    return fetch(article.link).then(res => res.text()).then(data => {
+                        const _$ = cheerio.load(data)
+                        article.link = _$('c-wiz a[rel=nofollow]').attr('href')
+                        return article
+                    })
+                })).then(articles => {
+                    return articles
+                }).catch((err) => {
+                    return results;
+                })
             }).then(results => {
                 fs.writeFile(output, JSON.stringify(results), function(err) {
                     if(err) {
