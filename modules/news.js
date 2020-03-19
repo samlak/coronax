@@ -6,11 +6,12 @@ const newsUpdate = (bot, msg) => {
     var country =  msg.text.split('/news ')[1];
     if(country){
         var location = `in ${country}`;
-        const keyword = `Coronavirus news`;
-        const timeframe = '14d';
+        const keyword = `Coronavirus news `;
+        const timeframe = '7d';
+        const output = "specificNews.json";
         
         const fetchFromGoogleNews = () => {
-            fetch(`https://news.google.com/search?q=${keyword} ${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
+            fetch(`https://news.google.com/search?q=${keyword}${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
                 const $ = cheerio.load(data);
                 const articles = $('c-wiz article');
                 let results = [];
@@ -26,53 +27,12 @@ const newsUpdate = (bot, msg) => {
                     i++;
                 });
                 return results;
-            }).then((news) => {
-                
-                const newsData = (start, stop) => {
-            
-                    var newsInfo = '';
-                    var stop = stop > news.length ? news.length : stop;
-                    for(var i = start; i < stop; i++) {
-                        const title = news[i].title;
-                        const subtitle = news[i].subtitle;
-                        const link = news[i].link;
-                        const source = news[i].source;
-                        const time = news[i].time;
-                        newsInfo += `\n\n*${title}* \n${subtitle} \n[${source}](${link}) \n${time}`;
-                    };
-            
-                    var keyboard = [];
-                    var pages =  news.length / 10;
-                    var lastPage = pages >= 8 ? 8 : pages;
-            
-                    for(let i = 0; i < lastPage; i++){
-                        keyboard.push({text: Number(i) + 1, callback_data: i});
+            }).then(results => {
+                fs.writeFile(output, JSON.stringify(results), function(err) {
+                    if(err) {
+                        return bot.sendMessage(msg.chat.id, "There was an error when fetching the data");
                     }
-            
-                    bot.sendMessage(
-                        msg.chat.id,
-                        `*Coronavirus news ${location}* ${newsInfo} \n\nTo access country specific news, use */news japan*, */news south korea*, */news canada*`,
-                        {
-                            "reply_markup": {
-                                "inline_keyboard": [
-                                    [{text: "Source (Google News)", url: `https://news.google.com/search?q=${keyword} ${location} when:${timeframe}`}],
-                                    keyboard
-                                ]
-                            },
-                            parse_mode: "Markdown"
-                        }
-                    );
-                } 
-                
-                bot.on("callback_query", function(data){
-                    let currentNum = data.data;
-                    let start = Number(currentNum) * 10;
-                    let stop = Number(start) +  10;
-            
-                    return newsData(start, stop);
-                });
-            
-                return newsData(0, 10);
+                })
             }).catch((err) => {  
                 return bot.sendMessage(msg.chat.id, "There was an error when fetching the data");
             });
@@ -80,14 +40,64 @@ const newsUpdate = (bot, msg) => {
         
         fetchFromGoogleNews();
         
+        var newsUpdate = fs.readFileSync(output).toString();
+        var news = JSON.parse(newsUpdate);
+    
+        const newsData = (start, stop) => {
+    
+            var newsInfo = '';
+            var stop = stop > news.length ? news.length : stop;
+            for(var i = start; i < stop; i++) {
+                const title = news[i].title;
+                const subtitle = news[i].subtitle;
+                const link = news[i].link;
+                const source = news[i].source;
+                const time = news[i].time;
+                newsInfo += `\n\n*${title}* \n${subtitle} \n[${source}](${link}) \n${time}`;
+            };
+    
+            var keyboard = [];
+            var pages =  news.length / 10;
+            var lastPage = pages >= 8 ? 8 : pages;
+    
+            for(let i = 0; i < lastPage; i++){
+                keyboard.push({text: Number(i) + 1, callback_data: i});
+            }
+    
+            bot.sendMessage(
+                msg.chat.id,
+                `*Coronavirus news ${location}* ${newsInfo}`,
+                {
+                    "reply_markup": {
+                        "inline_keyboard": [
+                            [{text: "Source (Google News)", url: `https://news.google.com/search?q=${keyword}${location} when:${timeframe}`}],
+                            keyboard
+                        ]
+                    },
+                    parse_mode: "Markdown"
+                }
+            );
+        } 
+        
+        bot.on("callback_query", function(data){
+            let currentNum = data.data;
+            let start = Number(currentNum) * 10;
+            let stop = Number(start) +  10;
+    
+            return newsData(start, stop);
+        });
+    
+        return newsData(0, 10);
+    
+        
     }else{
         var location = 'around the world';
-        const keyword = "Coronavirus news";
+        const keyword = "Coronavirus news ";
         const output = "news.json";
-        const timeframe = '14d';
+        const timeframe = '7d';
         
         const fetchFromGoogleNews = () => {
-            fetch(`https://news.google.com/search?q=${keyword} ${location} when:${timeframe}`).then(res => res.text()).then(data => {
+            fetch(`https://news.google.com/search?q=${keyword}${location} when:${timeframe}`).then(res => res.text()).then(data => {
                 const $ = cheerio.load(data);
                 const articles = $('c-wiz article');
                 let results = [];
@@ -152,11 +162,11 @@ const newsUpdate = (bot, msg) => {
     
             bot.sendMessage(
                 msg.chat.id,
-                `*Coronavirus news ${location}* ${newsInfo} \n\nTo access country specific news, use */news japan*, */news south korea*, */news canada*`,
+                `*Coronavirus news ${location}* ${newsInfo} \n\nTo access country specific news, use */news country* e.g */news Canada*`,
                 {
                     "reply_markup": {
                         "inline_keyboard": [
-                            [{text: "Source (Google News)", url: `https://news.google.com/search?q=${keyword} ${location} when:${timeframe}`}],
+                            [{text: "Source (Google News)", url: `https://news.google.com/search?q=${keyword}${location} when:${timeframe}`}],
                             keyboard
                         ]
                     },
