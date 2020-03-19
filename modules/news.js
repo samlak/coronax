@@ -8,7 +8,7 @@ const newsUpdate = (bot, msg) => {
         var location = `in ${country}`;
         const keyword = `Coronavirus news `;
         const timeframe = '7d';
-        const output = "specificNews.json";
+        const output = "specific_news.json";
         
         const fetchFromGoogleNews = () => {
             fetch(`https://news.google.com/search?q=${keyword}${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
