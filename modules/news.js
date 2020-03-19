@@ -38,7 +38,18 @@ const newsUpdate = (bot, msg) => {
             });
         }
         
-        fetchFromGoogleNews();
+        if(fs.existsSync(output)){
+            var fileModified = fs.statSync(output);
+            var lastModifiedTimestamp = fileModified.mtime.getTime();
+            var lastModified = Math.round((new Date() - lastModifiedTimestamp) / 60000);
+        } else {
+            var lastModified = "noFile";
+        }
+    
+        if(lastModified >= 15 || lastModified == "noFile"){
+            fetchFromGoogleNews();
+        }
+        
         
         var newsUpdate = fs.readFileSync(output).toString();
         var news = JSON.parse(newsUpdate);
