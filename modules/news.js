@@ -5,11 +5,12 @@ const fetch = require('node-fetch')
 const newsUpdate = (bot, msg) => {
     var country =  msg.text.split('/news ')[1];
     if(country){
-        const keyword = `Coronavirus news around the world in ${country}`;
+        var location = `in ${country}`;
+        const keyword = `Coronavirus news`;
         const timeframe = '14d';
         
         const fetchFromGoogleNews = () => {
-            fetch(`https://news.google.com/search?q=${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
+            fetch(`https://news.google.com/search?q=${keyword} ${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
                 const $ = cheerio.load(data);
                 const articles = $('c-wiz article');
                 let results = [];
@@ -50,11 +51,11 @@ const newsUpdate = (bot, msg) => {
             
                     bot.sendMessage(
                         msg.chat.id,
-                        `*Coronavirus news ${loacation}* ${newsInfo} \n\nTo access country specific news, use */news japan*, */news south korea*, */news canada*`,
+                        `*Coronavirus news ${location}* ${newsInfo} \n\nTo access country specific news, use */news japan*, */news south korea*, */news canada*`,
                         {
                             "reply_markup": {
                                 "inline_keyboard": [
-                                    [{text: "Source (Google News)", url: `https://news.google.com/search?q=${keyword} when:${timeframe}`}],
+                                    [{text: "Source (Google News)", url: `https://news.google.com/search?q=${keyword} ${location} when:${timeframe}`}],
                                     keyboard
                                 ]
                             },
@@ -81,12 +82,12 @@ const newsUpdate = (bot, msg) => {
         
     }else{
         var location = 'around the world';
-        const keyword = "Coronavirus news around the world";
+        const keyword = "Coronavirus news";
         const output = "news.json";
         const timeframe = '14d';
         
         const fetchFromGoogleNews = () => {
-            fetch(`https://news.google.com/search?q=${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
+            fetch(`https://news.google.com/search?q=${keyword} ${location} when:${timeframe}`).then(res => res.text()).then(data => {
                 const $ = cheerio.load(data);
                 const articles = $('c-wiz article');
                 let results = [];
@@ -151,11 +152,11 @@ const newsUpdate = (bot, msg) => {
     
             bot.sendMessage(
                 msg.chat.id,
-                `*Coronavirus news ${loacation}* ${newsInfo} \n\nTo access country specific news, use */news japan*, */news south korea*, */news canada*`,
+                `*Coronavirus news ${location}* ${newsInfo} \n\nTo access country specific news, use */news japan*, */news south korea*, */news canada*`,
                 {
                     "reply_markup": {
                         "inline_keyboard": [
-                            [{text: "Source (Google News)", url: `https://news.google.com/search?q=${keyword} when:${timeframe}`}],
+                            [{text: "Source (Google News)", url: `https://news.google.com/search?q=${keyword} ${location} when:${timeframe}`}],
                             keyboard
                         ]
                     },
