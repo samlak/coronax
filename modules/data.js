@@ -30,7 +30,7 @@ const worldwide = (bot, msg) => {
             var countryAffected = country.data.length;
             bot.sendMessage(
                 msg.chat.id,
-                `*Coronavirus Global Statistics* \n\nTotal country affected *${countryAffected}*  \n\nTotal cases *${cases}* \nTotal deaths *${deaths}* \nTotal recovered *${recovered}* \nTotal critical *${criticalCases}* \n\nToday's cases *${todayNewCases}* \nToday's deaths *${todayDeathCases}* `,       
+                `*Coronavirus Global Statistics* \n\nTotal country, territory and conveyance affected *${countryAffected}*  \n\nTotal cases *${cases}* \nTotal deaths *${deaths}* \nTotal recovered *${recovered}* \nTotal critical *${criticalCases}* \n\nToday's cases *${todayNewCases}* \nToday's deaths *${todayDeathCases}* `,       
                 {
                     "reply_markup": {
                         "inline_keyboard": [
