@@ -13,13 +13,11 @@
     "node-telegram-bot-api": "^0.40.0",
     "scrape-youtube": "0.0.5"
   },
-  "devDependencies": {
-    "pm2": "^4.2.3"
-  },
+  "devDependencies": {},
   "scripts": {
-    "start": "pm2-runtime start ecosystem.config.js --env production",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Salami Haruna",
   "license": "ISC"
 }
