@@ -1,5 +1,4 @@
 /node_modules
 .env
-specific_news.json
 users.json
 subscribers.json
