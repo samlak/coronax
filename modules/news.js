@@ -11,7 +11,7 @@ const newsUpdate = (bot, msg) => {
         const output = "specific_news.json";
         
         const fetchFromGoogleNews = () => {
-            fetch(`https://news.google.com/search?q=${keyword}${keyword} when:${timeframe}`).then(res => res.text()).then(data => {
+            fetch(`https://news.google.com/search?q=${keyword}${location} when:${timeframe}`).then(res => res.text()).then(data => {
                 const $ = cheerio.load(data);
                 const articles = $('c-wiz article');
                 let results = [];
