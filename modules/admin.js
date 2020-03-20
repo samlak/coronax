@@ -131,20 +131,11 @@ const start = (bot, msg) => {
 const log = (bot, msg) => {
     const subscribers = loadSubscribers();
     const users = loadUsers();
-    const userExist = users.find((user) => user.id == 1037393003);
-    if(userExist){
-        bot.sendMessage(
-            msg.chat.id,
-            `*Dashboard* \n\nUsers : *${users.length}* \n\nSubscribers : *${subscribers.length}*`,
-            {parse_mode: "Markdown"}
-        );
-    }else{
-        bot.sendMessage(
-            msg.chat.id,
-            "You don\'t have access to this information",
-            {parse_mode: "Markdown"}
-        );
-    }   
+    bot.sendMessage(
+        msg.chat.id,
+        `*Dashboard* \n\nUsers : *${users.length}* \n\nSubscribers : *${subscribers.length}*`,
+        {parse_mode: "Markdown"}
+    );
 }
 
 
