@@ -56,7 +56,7 @@ const newsUpdate = (bot, msg) => {
             var lastModified = "noFile";
         }
     
-        if(lastModified >= 15 || lastModified == "noFile"){
+        if(lastModified >= 0 || lastModified == "noFile"){
             fetchFromGoogleNews();
         }
         
