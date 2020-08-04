@@ -26,17 +26,19 @@ const newsUpdate = async (bot, msg) => {
                     });
                     i++;
                 });
-                return Promise.all(results.map(article => {
-                    return fetch(article.link).then(res => res.text()).then(data => {
-                        const _$ = cheerio.load(data)
-                        article.link = _$('c-wiz a[rel=nofollow]').attr('href')
-                        return article
-                    })
-                })).then(articles => {
-                    return articles
-                }).catch((err) => {
-                    return results;
-                })
+                // return Promise.all(results.map(article => {
+                //     return fetch(article.link).then(res => res.text()).then(data => {
+                //         const _$ = cheerio.load(data)
+                //         article.link = _$('c-wiz a[rel=nofollow]').attr('href')
+                //         return article
+                //     })
+                // })).then(articles => {
+                //     return articles
+                // }).catch((err) => {
+                //     return results;
+                // })
+
+                return results;
             })
             .then(results => {
                 // fs.writeFile(output, JSON.stringify(results), function(err) {
@@ -68,8 +70,7 @@ const newsUpdate = async (bot, msg) => {
         // var newsUpdate = fs.readFileSync(output).toString();
         // var news = JSON.parse(newsUpdate);
 
-        fetchFromGoogleNews(newsUpdate => {
-            const news =  newsUpdate;
+        fetchFromGoogleNews(news => {
             console.log(news);
 
             const newsData = (start, stop) => {
