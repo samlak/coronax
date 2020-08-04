@@ -28,7 +28,7 @@ I will like to appreciate the following for providing data that drive this bot:"
 * [WHO (World Health Organization)](https://www.who.int/)
 * [Youtube](https://youtube.com/)
 * [Mayoclinic](https://www.mayoclinic.org/)
-* [Worldometers](https://www.worldometers.info/)
+* [Disease.sh](https://www.disease.sh/)
 
 ## CONTACT
 You can follow me on social media

@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const generalStatistics = "https://corona.lmao.ninja/all";
-const countryStatistics = "https://corona.lmao.ninja/countries";
+const generalStatistics = "https://disease.sh/v3/covid-19/all";
+const countryStatistics = "https://disease.sh/v3/covid-19/countries";
 
 const worldwide = (bot, msg) => {
     axios.get(generalStatistics).then((result) => {
@@ -34,7 +34,7 @@ const worldwide = (bot, msg) => {
                 {
                     "reply_markup": {
                         "inline_keyboard": [
-                            [{text: "Source (Worldometers)", url: "https://www.worldometers.info/coronavirus/"}],
+                            [{text: "Source (Disease.sh)", url: "https://www.disease.sh"}],
                         ]
                     },
                     parse_mode: "Markdown"
@@ -156,7 +156,7 @@ const search = (bot, msg) => {
                 {
                     "reply_markup": {
                         "inline_keyboard": [
-                            [{text: "Source (Worldometers)", url: "https://www.worldometers.info/coronavirus/"}],
+                            [{text: "Source (Disease.sh)", url: "https://www.disease.sh"}],
                         ]
                     },
                     parse_mode: "Markdown"

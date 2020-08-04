@@ -161,7 +161,7 @@ const credit = (bot, msg) => {
         "\n[WHO (World Health Organization)](https://www.who.int/)"+
         "\n[Youtube](https://youtube.com/)"+
         "\n[Mayoclinic](https://www.mayoclinic.org/)"+
-        "\n[Worldometers](https://www.worldometers.info/)",
+        "\n[Disease.sh](https://www.disease.sh/)",
         {parse_mode: "Markdown"}
     );
 }
