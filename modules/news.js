@@ -54,7 +54,6 @@ const newsUpdate = async (bot, msg) => {
 
         if(output){
             if(!fs.existsSync(output)){
-                // console.log("There was an error when fetching the data. Please try again");
                 bot.sendMessage(msg.chat.id, "There was an error when fetching the data. Please try again");
             }
         }
@@ -118,44 +117,6 @@ const newsUpdate = async (bot, msg) => {
         const keyword = "Coronavirus news ";
         const output = "news.json";
         const timeframe = '7d';
-        
-        // const fetchFromGoogleNews = () => {
-        //     fetch(`https://news.google.com/search?q=${keyword}${location} when:${timeframe}`).then(res => res.text()).then(data => {
-        //         const $ = cheerio.load(data);
-        //         const articles = $('c-wiz article');
-        //         let results = [];
-        //         let i = 0;
-        //         $(articles).each(function() {
-        //             results.push({
-        //                 "title": $(this).find('h3').text() || false,
-        //                 "subtitle": $(this).find('span').first().text() || false,
-        //                 "link": $(this).find('a').first().attr('href').replace('./', 'https://news.google.com/') || false,
-        //                 "source": $(this).find('div:last-child a').text() || false,
-        //                 "time": $(this).find('div:last-child time').text() || false
-        //             });
-        //             i++;
-        //         });
-        //         return Promise.all(results.map(article => {
-        //             return fetch(article.link).then(res => res.text()).then(data => {
-        //                 const _$ = cheerio.load(data)
-        //                 article.link = _$('c-wiz a[rel=nofollow]').attr('href')
-        //                 return article
-        //             })
-        //         })).then(articles => {
-        //             return articles
-        //         }).catch((err) => {
-        //             return results;
-        //         })
-        //     }).then(results => {
-        //         fs.writeFile(output, JSON.stringify(results), function(err) {
-        //             if(err) {
-        //                 return bot.sendMessage(msg.chat.id, "There was an error when fetching the data");
-        //             }
-        //         })
-        //     }).catch((err) => {  
-        //         return bot.sendMessage(msg.chat.id, "There was an error when fetching the data");
-        //     });
-        // }
         
         if(fs.existsSync(output)){
             var fileModified = fs.statSync(output);
